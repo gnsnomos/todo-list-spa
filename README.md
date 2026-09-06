@@ -66,6 +66,30 @@ npm run preview
 Ο φάκελος `dist/` μπορεί να ανέβει σε οποιοδήποτε static hosting
 (GitHub Pages, Netlify, Vercel, Cloudflare Pages κ.λπ.).
 
+## Deployment στο GitHub Pages (αυτόματο)
+
+Το project περιλαμβάνει ήδη ένα GitHub Actions workflow
+(`.github/workflows/deploy.yml`) που κάνει build και δημοσιεύει
+αυτόματα σε κάθε push στο `main`.
+
+1. **Άλλαξε το `base` στο `vite.config.js`** ώστε να ταιριάζει με το
+   όνομα του repository σου, π.χ. αν το repo λέγεται `psonia`:
+   ```js
+   base: "/psonia/",
+   ```
+2. **Πρόσθεσε τα secrets του Supabase στο GitHub repo**
+   (Settings → Secrets and variables → Actions → New repository secret):
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_KEY`
+
+   (Το `.env` δεν ανεβαίνει ποτέ στο GitHub — γι' αυτό χρειάζονται secrets.)
+3. **Ενεργοποίησε τη σωστή πηγή για τα Pages**: Settings → Pages →
+   στο "Build and deployment" → "Source" επίλεξε **"GitHub Actions"**
+   (όχι "Deploy from a branch").
+4. Κάνε push στο `main`. Το workflow θα τρέξει αυτόματα (το βλέπεις
+   στο tab "Actions") και σε λίγα λεπτά το site θα είναι διαθέσιμο στο
+   `https://<username>.github.io/<repo-name>/`.
+
 ## Αλλαγή κατηγοριών
 
 Άνοιξε το `src/lib/categories.js` και πρόσθεσε/άλλαξε αντικείμενα στη μορφή:
