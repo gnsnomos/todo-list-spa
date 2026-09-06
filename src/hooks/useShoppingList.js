@@ -34,13 +34,21 @@ export function useShoppingList() {
     if (!value) return;
     setSyncState("busy");
     const { error } = await supabase.from("items").insert({ text: value, category, done: false });
-    if (error) setSyncState("error");
+    if (error) {
+      setSyncState("error");
+      return;
+    }
+    await fetchAll();
   }
 
   async function toggleDone(row) {
     setSyncState("busy");
     const { error } = await supabase.from("items").update({ done: !row.done }).eq("id", row.id);
-    if (error) setSyncState("error");
+    if (error) {
+      setSyncState("error");
+      return;
+    }
+    await fetchAll();
   }
 
   async function editItem(id, text, category) {
@@ -48,7 +56,11 @@ export function useShoppingList() {
     if (!value) return;
     setSyncState("busy");
     const { error } = await supabase.from("items").update({ text: value, category }).eq("id", id);
-    if (error) setSyncState("error");
+    if (error) {
+      setSyncState("error");
+      return;
+    }
+    await fetchAll();
   }
 
   async function removeItem(id) {
@@ -57,7 +69,11 @@ export function useShoppingList() {
       .from("items")
       .update({ deleted_at: new Date().toISOString() })
       .eq("id", id);
-    if (error) setSyncState("error");
+    if (error) {
+      setSyncState("error");
+      return;
+    }
+    await fetchAll();
   }
 
   async function clearDoneIds(ids) {
@@ -67,7 +83,11 @@ export function useShoppingList() {
       .from("items")
       .update({ deleted_at: new Date().toISOString() })
       .in("id", ids);
-    if (error) setSyncState("error");
+    if (error) {
+      setSyncState("error");
+      return;
+    }
+    await fetchAll();
   }
 
   const activeItems = rows.filter((r) => !r.deleted_at);
