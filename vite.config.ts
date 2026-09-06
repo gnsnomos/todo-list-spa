@@ -6,5 +6,5 @@ export default defineConfig({
   // Άλλαξε το "/shopping-list-app/" ώστε να ταιριάζει ΑΚΡΙΒΩΣ με το όνομα
   // του GitHub repository σου (π.χ. αν το repo λέγεται "psonia",
   // βάλε base: "/psonia/"). Αν χρησιμοποιείς custom domain, βάλε base: "/".
-  base: "/shopping-list-app/",
+  base: "/todo-list-spa/",
 });
