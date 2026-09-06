@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useShoppingList } from "./hooks/useShoppingList";
-import Header from "./components/Header.jsx";
-import AddForm from "./components/AddForm.jsx";
-import Summary from "./components/Summary.jsx";
-import ItemList from "./components/ItemList.jsx";
+import Header from "./components/Header";
+import AddForm from "./components/AddForm";
+import Summary from "./components/Summary";
+import ItemList from "./components/ItemList";
 
 export default function App() {
   const {
@@ -18,7 +18,7 @@ export default function App() {
     clearDoneIds,
   } = useShoppingList();
 
-  const [editingId, setEditingId] = useState(null);
+  const [editingId, setEditingId] = useState<number | null>(null);
 
   function handleClearDone() {
     const ids = activeItems.filter((i) => i.done).map((i) => i.id);

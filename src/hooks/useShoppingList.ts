@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "../lib/supabaseClient";
+import type { ItemRowData, HistoryEntry, SyncState } from "../types";
 
 export function useShoppingList() {
-  const [rows, setRows] = useState([]);
+  const [rows, setRows] = useState<ItemRowData[]>([]);
   const [loading, setLoading] = useState(true);
-  const [syncState, setSyncState] = useState("ok"); // ok | busy | error
+  const [syncState, setSyncState] = useState<SyncState>("ok");
 
   const fetchAll = useCallback(async () => {
     const { data, error } = await supabase
@@ -15,7 +16,7 @@ export function useShoppingList() {
       setSyncState("error");
       return;
     }
-    setRows(data || []);
+    setRows((data as ItemRowData[]) || []);
     setSyncState("ok");
     setLoading(false);
   }, []);
@@ -26,10 +27,12 @@ export function useShoppingList() {
       .channel("items-changes")
       .on("postgres_changes", { event: "*", schema: "public", table: "items" }, () => fetchAll())
       .subscribe();
-    return () => supabase.removeChannel(channel);
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [fetchAll]);
 
-  async function addItem(text, category) {
+  async function addItem(text: string, category: string) {
     const value = text.trim();
     if (!value) return;
     setSyncState("busy");
@@ -41,7 +44,7 @@ export function useShoppingList() {
     await fetchAll();
   }
 
-  async function toggleDone(row) {
+  async function toggleDone(row: ItemRowData) {
     setSyncState("busy");
     const { error } = await supabase.from("items").update({ done: !row.done }).eq("id", row.id);
     if (error) {
@@ -51,7 +54,7 @@ export function useShoppingList() {
     await fetchAll();
   }
 
-  async function editItem(id, text, category) {
+  async function editItem(id: number, text: string, category: string) {
     const value = text.trim();
     if (!value) return;
     setSyncState("busy");
@@ -63,7 +66,7 @@ export function useShoppingList() {
     await fetchAll();
   }
 
-  async function removeItem(id) {
+  async function removeItem(id: number) {
     setSyncState("busy");
     const { error } = await supabase
       .from("items")
@@ -76,7 +79,7 @@ export function useShoppingList() {
     await fetchAll();
   }
 
-  async function clearDoneIds(ids) {
+  async function clearDoneIds(ids: number[]) {
     if (ids.length === 0) return;
     setSyncState("busy");
     const { error } = await supabase
@@ -93,18 +96,19 @@ export function useShoppingList() {
   const activeItems = rows.filter((r) => !r.deleted_at);
 
   // ιστορικό: συγκεντρωτικά στοιχεία από ΟΛΕΣ τις γραμμές (ακόμη κι όσες έχουν διαγραφεί)
-  const historyMap = {};
+  const historyMap: Record<string, HistoryEntry> = {};
   rows.forEach((r) => {
     const key = r.text.toLowerCase();
     const ts = new Date(r.created_at).getTime() || 0;
-    if (!historyMap[key]) {
+    const existing = historyMap[key];
+    if (!existing) {
       historyMap[key] = { text: r.text, category: r.category, count: 1, lastUsed: ts };
     } else {
-      historyMap[key].count += 1;
-      if (ts > historyMap[key].lastUsed) {
-        historyMap[key].lastUsed = ts;
-        historyMap[key].category = r.category;
-        historyMap[key].text = r.text;
+      existing.count += 1;
+      if (ts > existing.lastUsed) {
+        existing.lastUsed = ts;
+        existing.category = r.category;
+        existing.text = r.text;
       }
     }
   });

@@ -1,6 +1,11 @@
 import { CATEGORIES } from "../lib/categories";
 
-export default function CategorySwatches({ value, onChange }) {
+interface CategorySwatchesProps {
+  value: string;
+  onChange: (id: string) => void;
+}
+
+export default function CategorySwatches({ value, onChange }: CategorySwatchesProps) {
   return (
     <div className="sl-swatches">
       {CATEGORIES.map((c) => (

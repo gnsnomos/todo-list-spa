@@ -1,7 +1,13 @@
 import { catOf } from "../lib/categories";
-import { IconPlus } from "../lib/icons.jsx";
+import { IconPlus } from "../lib/icons";
+import type { HistoryEntry } from "../types";
 
-export default function Suggestions({ suggestions, onPick }) {
+interface SuggestionsProps {
+  suggestions: HistoryEntry[];
+  onPick: (h: HistoryEntry) => void;
+}
+
+export default function Suggestions({ suggestions, onPick }: SuggestionsProps) {
   if (suggestions.length === 0) return null;
   return (
     <ul className="sl-suggest-list">
@@ -10,7 +16,7 @@ export default function Suggestions({ suggestions, onPick }) {
           <button type="button" className="sl-suggest-item" onClick={() => onPick(h)}>
             <span className="sl-swatch-dot" style={{ background: catOf(h.category).color }} />
             <span className="sl-suggest-text">{h.text}</span>
-            <IconPlus size={14} className="sl-suggest-plus" />
+            <IconPlus size={14} />
           </button>
         </li>
       ))}

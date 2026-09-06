@@ -1,4 +1,10 @@
-export default function Header({ syncState }) {
+import type { SyncState } from "../types";
+
+interface HeaderProps {
+  syncState: SyncState;
+}
+
+export default function Header({ syncState }: HeaderProps) {
   const label =
     syncState === "error" ? "Σφάλμα σύνδεσης" : syncState === "busy" ? "Αποθήκευση..." : "Συγχρονισμένο";
   const dotClass = "sl-sync-dot " + (syncState === "error" ? "off" : syncState === "busy" ? "busy" : "");

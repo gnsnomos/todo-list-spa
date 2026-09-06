@@ -1,6 +1,12 @@
 import { catOf } from "../lib/categories";
+import type { HistoryEntry } from "../types";
 
-export default function FrequentChips({ chips, onPick }) {
+interface FrequentChipsProps {
+  chips: HistoryEntry[];
+  onPick: (h: HistoryEntry) => void;
+}
+
+export default function FrequentChips({ chips, onPick }: FrequentChipsProps) {
   if (chips.length === 0) return null;
   return (
     <div className="sl-chips">

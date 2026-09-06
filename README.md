@@ -7,30 +7,32 @@
 
 ```
 src/
-  main.jsx                 σημείο εκκίνησης
-  App.jsx                  κύριο component
-  index.css                όλο το styling
+  main.tsx                  σημείο εκκίνησης
+  App.tsx                   κύριο component
+  index.css                 όλο το styling
+  types.ts                  κοινοί τύποι δεδομένων (Category, ItemRowData, HistoryEntry...)
+  vite-env.d.ts              typings για μεταβλητές περιβάλλοντος (import.meta.env)
   lib/
-    supabaseClient.js       ρύθμιση σύνδεσης με Supabase
-    categories.js           λίστα κατηγοριών + χρωμάτων (εδώ προσθέτεις/αλλάζεις κατηγορίες)
-    icons.jsx                μικρά SVG εικονίδια
+    supabaseClient.ts        ρύθμιση σύνδεσης με Supabase
+    categories.ts            λίστα κατηγοριών + χρωμάτων (εδώ προσθέτεις/αλλάζεις κατηγορίες)
+    icons.tsx                 μικρά SVG εικονίδια
   hooks/
-    useShoppingList.js       όλη η λογική (fetch, realtime, add/edit/delete, ιστορικό)
+    useShoppingList.ts        όλη η λογική (fetch, realtime, add/edit/delete, ιστορικό)
   components/
-    Header.jsx
-    AddForm.jsx
-    Suggestions.jsx
-    FrequentChips.jsx
-    CategorySwatches.jsx
-    ItemList.jsx
-    ItemRow.jsx
-    EditRow.jsx
-    Summary.jsx
+    Header.tsx
+    AddForm.tsx
+    Suggestions.tsx
+    FrequentChips.tsx
+    CategorySwatches.tsx
+    ItemList.tsx
+    ItemRow.tsx
+    EditRow.tsx
+    Summary.tsx
 ```
 
 ## Πρώτη εγκατάσταση
 
-Χρειάζεσαι [Node.js](https://nodejs.org) (v18+) εγκατεστημένο.
+Χρειάζεσαι [Node.js](https://nodejs.org) **20.19+ ή 22.12+** (απαίτηση του Vite 8).
 
 ```bash
 npm install
@@ -92,7 +94,7 @@ npm run preview
 
 ## Αλλαγή κατηγοριών
 
-Άνοιξε το `src/lib/categories.js` και πρόσθεσε/άλλαξε αντικείμενα στη μορφή:
+Άνοιξε το `src/lib/categories.ts` και πρόσθεσε/άλλαξε αντικείμενα στη μορφή:
 
 ```js
 { id: "frozen", label: "Κατεψυγμένα", color: "#5C7AEA" }

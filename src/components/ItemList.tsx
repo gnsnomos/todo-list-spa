@@ -1,7 +1,26 @@
 import { CATEGORIES } from "../lib/categories";
-import ItemRow from "./ItemRow.jsx";
+import ItemRow from "./ItemRow";
+import type { ItemRowData } from "../types";
 
-export default function ItemList({ activeItems, editingId, onToggle, onStartEdit, onSaveEdit, onCancelEdit, onDelete }) {
+interface ItemListProps {
+  activeItems: ItemRowData[];
+  editingId: number | null;
+  onToggle: (item: ItemRowData) => void;
+  onStartEdit: (id: number) => void;
+  onSaveEdit: (id: number, text: string, category: string) => void;
+  onCancelEdit: () => void;
+  onDelete: (id: number) => void;
+}
+
+export default function ItemList({
+  activeItems,
+  editingId,
+  onToggle,
+  onStartEdit,
+  onSaveEdit,
+  onCancelEdit,
+  onDelete,
+}: ItemListProps) {
   const grouped = CATEGORIES.map((c) => ({
     ...c,
     entries: activeItems.filter((i) => i.category === c.id),

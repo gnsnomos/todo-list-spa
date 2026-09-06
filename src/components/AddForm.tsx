@@ -1,15 +1,22 @@
 import { useState, useRef } from "react";
-import CategorySwatches from "./CategorySwatches.jsx";
-import Suggestions from "./Suggestions.jsx";
-import FrequentChips from "./FrequentChips.jsx";
+import CategorySwatches from "./CategorySwatches";
+import Suggestions from "./Suggestions";
+import FrequentChips from "./FrequentChips";
 import { CATEGORIES } from "../lib/categories";
-import { IconPlus } from "../lib/icons.jsx";
+import { IconPlus } from "../lib/icons";
+import type { HistoryEntry, ItemRowData } from "../types";
 
-export default function AddForm({ history, activeItems, onAdd }) {
+interface AddFormProps {
+  history: HistoryEntry[];
+  activeItems: ItemRowData[];
+  onAdd: (text: string, category: string) => void;
+}
+
+export default function AddForm({ history, activeItems, onAdd }: AddFormProps) {
   const [text, setText] = useState("");
-  const [cat, setCat] = useState(CATEGORIES[0].id);
+  const [cat, setCat] = useState<string>(CATEGORIES[0].id);
   const [inputFocused, setInputFocused] = useState(false);
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const activeTextsLower = new Set(activeItems.map((r) => r.text.toLowerCase()));
   const trimmed = text.trim().toLowerCase();
@@ -28,13 +35,13 @@ export default function AddForm({ history, activeItems, onAdd }) {
         .slice(0, 8)
     : [];
 
-  function submit(overrideText, overrideCat) {
+  function submit(overrideText?: string, overrideCat?: string) {
     const value = overrideText !== undefined ? overrideText : text;
     const category = overrideCat !== undefined ? overrideCat : cat;
     if (!value.trim()) return;
     onAdd(value, category);
     setText("");
-    inputRef.current && inputRef.current.focus();
+    inputRef.current?.focus();
   }
 
   return (

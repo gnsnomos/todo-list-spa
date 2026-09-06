@@ -1,14 +1,21 @@
 import { useState, useRef, useEffect } from "react";
-import CategorySwatches from "./CategorySwatches.jsx";
-import { IconCheck, IconX } from "../lib/icons.jsx";
+import CategorySwatches from "./CategorySwatches";
+import { IconCheck, IconX } from "../lib/icons";
+import type { ItemRowData } from "../types";
 
-export default function EditRow({ item, onSave, onCancel }) {
+interface EditRowProps {
+  item: ItemRowData;
+  onSave: (text: string, category: string) => void;
+  onCancel: () => void;
+}
+
+export default function EditRow({ item, onSave, onCancel }: EditRowProps) {
   const [text, setText] = useState(item.text);
   const [cat, setCat] = useState(item.category);
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    inputRef.current && inputRef.current.focus();
+    inputRef.current?.focus();
   }, []);
 
   function save() {

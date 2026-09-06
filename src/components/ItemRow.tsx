@@ -1,7 +1,28 @@
-import EditRow from "./EditRow.jsx";
-import { IconCheck, IconPencil, IconTrash } from "../lib/icons.jsx";
+import EditRow from "./EditRow";
+import { IconCheck, IconPencil, IconTrash } from "../lib/icons";
+import type { ItemRowData } from "../types";
 
-export default function ItemRow({ item, categoryColor, isEditing, onToggle, onStartEdit, onSaveEdit, onCancelEdit, onDelete }) {
+interface ItemRowProps {
+  item: ItemRowData;
+  categoryColor: string;
+  isEditing: boolean;
+  onToggle: (item: ItemRowData) => void;
+  onStartEdit: (id: number) => void;
+  onSaveEdit: (id: number, text: string, category: string) => void;
+  onCancelEdit: () => void;
+  onDelete: (id: number) => void;
+}
+
+export default function ItemRow({
+  item,
+  categoryColor,
+  isEditing,
+  onToggle,
+  onStartEdit,
+  onSaveEdit,
+  onCancelEdit,
+  onDelete,
+}: ItemRowProps) {
   return (
     <li
       className="sl-item"
